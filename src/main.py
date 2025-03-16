@@ -100,20 +100,23 @@ with mp_hands.Hands(min_detection_confidence = 0.5, min_tracking_confidence = 0.
             finger_pips = [2, 6, 10, 14] 
 
             for i in range(4):
-              finger_index = i + h*4
+              finger_index = i + h * 4
 
             #If the mouth is open, it simulate th use of the pedal
             if mouth_aspect_ratio(face_landmarks, img_w, img_h) > MOUTH_THRESHOLD:
               print("Pedal pressed")
 
               if is_finger_down(hand_landmarks.landmark, finger_tips[i], finger_pips[i]):
+                  
+                finger_state[finger_index] = True
+                sounds[finger_index].play()
                 
-                  sounds[finger_index].play()
-                  print(f"Playing sound {sounds_print[finger_index]}") 
-                  print(f"Playing sound {finger_index}")
+                print(f"Playing sound {sounds_print[finger_index]}") 
+                print(f"Playing sound {finger_index}")
 
             else:
               if is_finger_down(hand_landmarks.landmark, finger_tips[i], finger_pips[i]):
+
                 if not finger_state[finger_index]:
                   finger_state[finger_index] = True
                   sounds[finger_index].play()
